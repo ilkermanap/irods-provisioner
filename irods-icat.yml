@@ -36,9 +36,9 @@
       shell: rpm --import https://packages.irods.org/irods-signing-key.asc
 
     - name: iRODS package repository for yum
-      shell: wget -qO - https://packages.irods.org/renci-irods.yum.repo > /etc/yum.repos.d/renci-irods.yum.repo
-      args:
-        creates: /etc/yum.repos.d/renci-irods.yum.repo
+      get_url:
+        url: https://packages.irods.org/renci-irods.yum.repo
+        dest: /etc/yum.repos.d/renci-irods.yum.repo
 
 - hosts: irods-icat
   become_user: root
