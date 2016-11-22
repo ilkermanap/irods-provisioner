@@ -9,7 +9,7 @@
       yum: name={{ item }} state=installed
       with_items:
         - epel-release
-        - http://yum.postgresql.org/9.4/redhat/rhel-6-x86_64/pgdg-redhat94-9.4-3.noarch.rpm
+        - http://yum.postgresql.org/9.4/redhat/rhel-7-x86_64/pgdg-centos94-9.4-3.noarch.rpm
 
     - name: PostgreSQL 9.4 database server and python bindings
       yum: name={{ item }} state=latest
