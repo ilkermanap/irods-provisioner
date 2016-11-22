@@ -14,12 +14,12 @@
       when: hostvars[item].ansible_eth1.ipv4.address is defined
       with_items: "{{ groups['all'] }}" 
 
-    - name: necessary package repositories
+    - name: necessary base repositories
       yum: name={{ item }} state=latest
       with_items:
         - epel-release
 
-    - name: necessary management packages
+    - name: necessary base packages
       yum: name={{ item }} state=latest
       with_items:
         - psmisc
@@ -30,6 +30,15 @@
         - python-psycopg2
         - httpd
         - php
+        - wget
+
+    - name: import iRODS package repo signing key
+      shell: rpm --import https://packages.irods.org/irods-signing-key.asc
+
+    - name: iRODS package repository for yum
+      shell: wget -qO - https://packages.irods.org/renci-irods.yum.repo > /etc/yum.repos.d/renci-irods.yum.repo
+      args:
+        creates: /etc/yum.repos.d/renci-irods.yum.repo
 
 - hosts: irods-icat
   become_user: root
