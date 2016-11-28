@@ -13,6 +13,7 @@
       yum: name={{ item }} state=latest
       with_items:
         - unixODBC
+        - postgresql-odbc
         - irods-runtime
         - irods-server
         - irods-database-plugin-postgres
@@ -45,19 +46,19 @@
         - { srcfile: "../templates/irods-icat-setup-answerfile.j2", destfile: "{{ irods_home }}/setup-answerfile.txt" }
         - { srcfile: "../../../templates/irods-permissions-setup-answerfile.j2", destfile: "{{ irods_home }}/setup-permissions-answerfile.txt" }
 
-    - name: execute iRODS iCAT initial permissions setup if necessary
-      shell: "{{ irods_home }}/packaging/setup_irods_service_account.sh < {{ irods_home }}/setup-permissions-answerfile.txt"
-      args:
-        creates: "/etc/irods/service_account.config"
-
+#    - name: execute iRODS iCAT initial permissions setup if necessary
+#      shell: "{{ irods_home }}/packaging/setup_irods_service_account.sh < {{ irods_home }}/setup-permissions-answerfile.txt"
+#      args:
+#        creates: "/etc/irods/service_account.config"
+#
     - name: iRODS service account environment directory
       file: path="{{ irods_home }}/.irods" state=directory owner={{ irods_service_account }} group={{ irods_service_group }} mode=0700 
 
-    - name: execute iRODS iCAT initial setup if necessary on master
-      shell: "{{ irods_home }}/packaging/setup_irods.sh < {{ irods_home }}/setup-answerfile.txt"
-      when: ha_state == "master"
-      args:
-        creates: "{{ irods_home }}/.irods/irods_environment.json"
+#    - name: execute iRODS iCAT initial setup if necessary on master
+#      shell: "{{ irods_home }}/packaging/setup_irods.sh < {{ irods_home }}/setup-answerfile.txt"
+#      when: ha_state == "master"
+#      args:
+#        creates: "{{ irods_home }}/.irods/irods_environment.json"
 
     - name: configure iRODS iCAT
       template: src={{ item.srcfile }} dest={{ item.destfile }} owner={{ irods_service_account }} group={{ irods_service_group }} mode=0600
