@@ -2,6 +2,9 @@
 #
 # Vagrantfile - manifest file for Vagrant to provision virtual machines
 # Author: Ilari Korhonen, KTH Royal Institute of Technology
+#
+# Copyright (C) 2016-2017 KTH Royal Institute of Technology. All rights reserved.
+# See LICENSE file for more information.
 
 # JSON array for the Vagrants to be configured
 boxes = [
@@ -37,6 +40,13 @@ boxes = [
     :name => "rodsresc3",
     :eth1 => "192.168.56.24",
     :eth2 => "10.13.37.24",
+    :mem => "1024",
+    :cpu => "1"
+  },
+  {
+    :name => "rodsfront1",
+    :eth1 => "192.168.56.25",
+    :eth2 => "10.13.37.25",
     :mem => "1024",
     :cpu => "1"
   }

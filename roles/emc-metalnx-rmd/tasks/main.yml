@@ -1,0 +1,15 @@
+# irods-provisioner
+#
+# roles/emc-metalnx-rmd/tasks/main.yml - Ansible task for configuring EMC MetaLnx Remote Monitoring Daemon 
+# Author: Ilari Korhonen, KTH Royal Institute of Technology
+#
+# Copyright (C) 2016-2017 KTH Royal Institute of Technology. All rights reserved.
+# See LICENSE file for more information.
+
+---
+
+    - name: EMC MetaLnx RMD package
+      yum: name=https://bintray.com/metalnx/rpm/download_file?file_path=emc-metalnx-rmd-1.0-22.noarch.rpm state=present
+
+    - name: add role execution info to irods-provisioner manifest file
+      shell: echo "# role emc-metalnx-rmd provisioned successfully at {{ ansible_date_time.iso8601_micro }}" >> /etc/irods-provisioner.manifest

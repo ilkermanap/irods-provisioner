@@ -1,6 +1,6 @@
 # irods-provisioner
 #
-# group_vars/irods-icat - group variables for the iRODS iCAT hosts
+# group_vars/irods-icat - group variables for a single self-contained iRODS host 
 # Author: Ilari Korhonen, KTH Royal Institute of Technology
 #
 # Copyright (C) 2016-2017 KTH Royal Institute of Technology. All rights reserved.
@@ -28,6 +28,11 @@ irods_icat_db: irods-icat
 replication_user: replication
 replication_passwd: kl00nip0ssu
 
-# pgadmin configuration
-pgadmin_vhost_port: 8008
-pgadmin_vhost_ssl_enable: false
+# Davrods configuration
+davrods_vhost_port: 80
+davrods_irods_host: localhost
+davrods_auth_scheme: Native
+davrods_default_resc: "{{ irods_default_resc }}"
+davrods_exposed_root: Zone
+davrods_tx_buffer: 4096
+davrods_rx_buffer: 4096

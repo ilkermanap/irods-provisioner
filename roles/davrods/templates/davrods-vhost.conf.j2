@@ -1,12 +1,39 @@
-# davrods-vhost.conf
+# irods-provisioner
 #
+# roles/davrods/templates/davrods-vhost.conf.j2 - template for davrods apache httpd virtual host
+# Author: Ilari Korhonen, KTH Royal Institute of Technology
+#
+# Copyright (C) 2016-2017 KTH Royal Institute of Technology. All rights reserved.
+# See LICENSE file for more information.
+
+# davrods-vhost.conf
 # davrods is a mod_dav WebDAV provider. Configuration directives for davrods
 # should be placed in a <Location> block.
 #
 # Below we provide an example vhost configuration that enables davrods using
 # its default options.
 
+{% if davrods_vhost_port != 80 %}
+Listen {{ davrods_vhost_port }}
+{% endif %}
+
 <VirtualHost *:{{ davrods_vhost_port }}>
+
+{% if davrods_vhost_ssl_enable == true %}
+    SSLEngine on
+    SSLCipherSuite HIGH:MEDIUM:!aNULL:!MD5:!SEED:!IDEA
+    SSLProtocol all -SSLv2 -SSLv3
+{% endif %}
+
+{% if davrods_vhost_ssl_cert_file is defined %}
+    SSLCertificateFile {{ davrods_vhost_ssl_cert_file }}
+{% endif %}
+{% if davrods_vhost_ssl_chain_file is defined %}
+    SSLCertificateChainFile {{ davrods_vhost_ssl_chain_file }}
+{% endif %}
+{% if davrods_vhost_ssl_key_file is defined %}
+    SSLCertificateKeyFile {{ davrods_vhost_ssl_key_file }}
+{% endif %}
 
     # Enter your server name here.
     ServerName {{ ansible_nodename }}

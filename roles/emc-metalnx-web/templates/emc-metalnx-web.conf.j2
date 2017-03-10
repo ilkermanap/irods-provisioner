@@ -1,0 +1,27 @@
+# irods-provisioner
+#
+# roles/emc-metalnx-web/templates/emc-metalnx-web.conf.j2 - apache httpd virtual host template
+# Author: Ilari Korhonen, KTH Royal Institute of Technology
+#
+# Copyright (C) 2016-2017 KTH Royal Institute of Technology. All rights reserved.
+# See LICENSE file for more information.
+
+<VirtualHost *:{{ metalnx_vhost_port }}>
+{% if metalnx_vhost_ssl_enable == true %}
+   SSLEngine on
+   SSLCipherSuite HIGH:MEDIUM:!aNULL:!MD5:!SEED:!IDEA
+   SSLProtocol all -SSLv2 -SSLv3
+{% endif %}
+{% if metalnx_vhost_ssl_cert_file is defined %}
+   SSLCertificateFile {{ metalnx_vhost_ssl_cert_file }}
+{% endif %}
+{% if metalnx_vhost_ssl_chain_file is defined %}
+   SSLCertificateChainFile {{ metalnx_vhost_ssl_chain_file }}
+{% endif %}
+{% if metalnx_vhost_ssl_key_file is defined %}
+   SSLCertificateKeyFile {{ metalnx_vhost_ssl_key_file }}
+{% endif %}
+   ServerName {{ metalnx_vhost_name }}
+   ProxyPass / http://localhost:8080/
+   ProxyPassReverse / http://localhost:8080/
+</VirtualHost>

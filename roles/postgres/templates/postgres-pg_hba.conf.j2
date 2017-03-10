@@ -1,3 +1,11 @@
+# irods-provisioner
+#
+# roles/postgres/templates/postgres-pg_hba.conf.j2 - template for postgres host based access configuration file
+# Author: Ilari Korhonen, KTH Royal Institute of Technology
+#
+# Copyright (C) 2016-2017 KTH Royal Institute of Technology. All rights reserved.
+# See LICENSE file for more information.
+
 # TYPE  DATABASE        USER            ADDRESS                 METHOD
 
 # "local" is for Unix domain socket connections only
@@ -11,5 +19,9 @@ host    all             all             ::1/128                 md5
 #local   replication     postgres                                peer
 #host    replication     postgres        127.0.0.1/32            ident
 #host    replication     postgres        ::1/128                 ident
+{% if irods_icat_master is defined %}
 host	 replication	 {{ replication_user }}	{{ hostvars[irods_icat_master]['ha_ipaddr'] }}/32	md5
+{% endif %}
+{% if irods_icat_slave is defined %}
 host	 replication	 {{ replication_user }} {{ hostvars[irods_icat_slave]['ha_ipaddr'] }}/32	md5
+{% endif %}

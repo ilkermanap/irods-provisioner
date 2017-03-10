@@ -1,4 +1,28 @@
-<VirtualHost *>
+# irods-provisioner
+#
+# roles/pgadmin/templates/httpd-pgadmin.conf.j2 - apache httpd virtual host configuration template
+# Author: Ilari Korhonen, KTH Royal Institute of Technology
+#
+# Copyright (C) 2016-2017 KTH Royal Institute of Technology. All rights reserved.
+# See LICENSE file for more information.
+
+Listen {{ pgadmin_vhost_port }}
+
+<VirtualHost *:{{ pgadmin_vhost_port }}>
+{% if pgadmin_vhost_ssl_enable == true %}
+             SSLEngine on
+	     SSLCipherSuite HIGH:MEDIUM:!aNULL:!MD5:!SEED:!IDEA
+	     SSLProtocol all -SSLv2 -SSLv3
+{% endif %}
+{% if pgadmin_vhost_ssl_cert_file is defined %}
+             SSLCertificateFile {{ pgadmin_vhost_ssl_cert_file }}
+{% endif %}
+{% if pgadmin_vhost_ssl_chain_file is defined %}
+             SSLCertificateChainFile {{ pgadmin_vhost_ssl_chain_file }}
+{% endif %}
+{% if pgadmin_vhost_ssl_key_file is defined %}
+             SSLCertificateKeyFile {{ pgadmin_vhost_ssl_key_file }}
+{% endif %}
 	     ProxyPass / http://localhost:5050/
 	     ProxyPassReverse / http://localhost:5050/
 </VirtualHost>

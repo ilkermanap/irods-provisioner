@@ -1,20 +1,31 @@
 # irods-provisioner
 #
-# playbooks/irods-icat.yml - Ansible playbook for configuring an iRODS iCAT
+# playbooks/irods-cluster.yml - Ansible playbook for configuring a test iRODS cluster
 # Author: Ilari Korhonen, KTH Royal Institute of Technology
+#
+# Copyright (C) 2016-2017 KTH Royal Institute of Technology. All rights reserved.
+# See LICENSE file for more information.
 
 ---
 
-- hosts: all
+- hosts: irods
   become_user: root
 
   tasks:
+    - name: register git repo commit id
+      local_action: shell git rev-parse HEAD
+      become: no
+      register: git_commit_id
+
     - name: "Build hosts file"
       lineinfile: dest=/etc/hosts regexp='.*{{ item }}$' line="{{ hostvars[item].ansible_eth1.ipv4.address }} {{item}}" state=present
       when: hostvars[item].ansible_eth1.ipv4.address is defined
-      with_items: "{{ groups['all'] }}" 
+      with_items: "{{ groups['all'] }}"
 
-    - name: necessary base repositories
+    - name: build provisioner manifest file
+      template: src="../templates/irods-provisioner.manifest.j2" dest="/etc/irods-provisioner.manifest" mode=0644 owner=root group=root
+
+    - name: necessary package repositories
       yum: name={{ item }} state=latest
       with_items:
         - epel-release
@@ -50,10 +61,24 @@
 
     - role: pgadmin
 
+    - role: emc-metalnx-rmd
+
 - hosts: irods-resource
   become_user: root
 
   roles:
     - role: irods-resource
 
-#    - role: davrods
+    - role: davrods
+
+    - role: emc-metalnx-rmd
+
+- hosts: irods-frontend
+  become_user: root
+
+  roles:
+    - role: postgres
+
+    - role: emc-metalnx-web
+
+    - role: b2stage-gridftp

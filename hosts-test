@@ -2,6 +2,17 @@
 #
 # hosts-test - Ansible inventory file for the test hosts
 # Author: Ilari Korhonen, KTH Royal Institute of Technology
+#
+# Copyright (C) 2016-2017 KTH Royal Institute of Technology. All rights reserved.
+# See LICENSE file for more information.
+
+[irods]
+rodsmaster1
+rodsmaster2
+rodsresc1
+rodsresc2
+rodsresc3
+rodsfront1
 
 [irods-icat]
 rodsmaster1
@@ -11,3 +22,6 @@ rodsmaster2
 rodsresc1
 rodsresc2
 rodsresc3
+
+[irods-frontend]
+rodsfront1

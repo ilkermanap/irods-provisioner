@@ -1,6 +1,6 @@
 # irods-provisioner
 #
-# group_vars/irods-icat - group variables for the iRODS iCAT hosts
+# group_vars/irods-frontend - group variables for the iRODS resource hosts
 # Author: Ilari Korhonen, KTH Royal Institute of Technology
 #
 # Copyright (C) 2016-2017 KTH Royal Institute of Technology. All rights reserved.
@@ -19,15 +19,23 @@ healthcheck_user: healthcheck
 healthcheck_passwd: 0nksp0ssuja
 healthcheck_db: healthcheck
 
-# postgres irods icat role/database configuration
-irods_icat_user: irods
-irods_icat_passwd: r0dsi@p0ssu
-irods_icat_db: irods-icat
-
 # postgres replication role configuration
 replication_user: replication
 replication_passwd: kl00nip0ssu
 
-# pgadmin configuration
-pgadmin_vhost_port: 8008
-pgadmin_vhost_ssl_enable: false
+# metalnx-web configuration
+metalnx_db_user: metalnx
+metalnx_db_passwd: emc&irods#1
+metalnx_db: metalnx
+metalnx_irods_host: "{{ irods_icat_master }}"
+metalnx_vhost_port: 80
+metalnx_vhost_name: "{{ ansible_nodename }}"
+metalnx_vhost_ssl_enable: false
+
+# b2stage-gridftp configuration
+b2stage_gridftp_repo: https://github.com/EUDAT-B2STAGE/B2STAGE-GridFTP
+b2stage_gridftp_buildroot: /tmp/B2STAGE-GridFTP
+b2stage_gridftp_includepath: /usr/include/globus
+b2stage_gridftp_globus_prefix: /usr
+b2stage_gridftp_irods_prefix: /usr
+b2stage_gridftp_dest_path: /opt/iRODS_DSI
